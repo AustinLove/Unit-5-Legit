@@ -10,6 +10,6 @@ public class Patient {
 		status = stat;
 	}
 	public String toString(){
-		return "Name: " + name + "\tStatus: " + status;
+		return "Name: " + name + "\t\tStatus: " + status+"\n";
 	}
 }
