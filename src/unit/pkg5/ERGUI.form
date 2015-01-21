@@ -38,18 +38,15 @@
                           <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                           <Component id="txtname" min="-2" pref="225" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnfair" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="btnsch" min="-2" pref="85" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="btnser" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="btncrit" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnfair" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnser" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btncrit" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="btnsch" min="-2" pref="85" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="btnnext" max="32767" attributes="0"/>
                                   <Component id="btnall" max="32767" attributes="0"/>
@@ -155,6 +152,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Treat All"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnallActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>

@@ -7,10 +7,12 @@ public class ERGUI extends javax.swing.JFrame {
     Patient p;
     LinkedPriorityQueue q;
     int priority;
-    int BATMAN=4;
+    int BATMAN=10;
+    boolean t;
+    String stat="";
     public ERGUI() {
         initComponents();
-        q=new LinkedPriorityQueue(BATMAN);
+        q=new LinkedPriorityQueue(3);
     }
 
    
@@ -71,6 +73,11 @@ public class ERGUI extends javax.swing.JFrame {
         });
 
         btnall.setText("Treat All");
+        btnall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnallActionPerformed(evt);
+            }
+        });
 
         txtpatients.setEditable(false);
         txtpatients.setColumns(20);
@@ -98,16 +105,14 @@ public class ERGUI extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addGap(41, 41, 41)
                             .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(btnfair)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnsch, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnser)
-                                    .addComponent(btncrit))
-                                .addGap(120, 120, 120)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnser)
+                                .addComponent(btncrit)
+                                .addComponent(btnfair))
+                            .addGap(120, 120, 120)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnsch, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnnext, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnall, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
@@ -150,18 +155,22 @@ public class ERGUI extends javax.swing.JFrame {
     private void btnschActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnschActionPerformed
         // TODO add your handling code here:
         
-        String nm = txtname.getText();
-        String stat = null;
-        if (btnfair.isSelected())stat = btnfair.getText();
-        if (btnser.isSelected()) stat = btnser.getText();
-        if (btncrit.isSelected()) stat = btncrit.getText();
-        if(btnfair.isSelected()) priority=1;
-        if(btnser.isSelected()) priority=2;
-        if(btncrit.isSelected()) priority=3;
-        p = new Patient(nm,stat);
+        if(btnfair.isSelected()) stat = btnfair.getText(); 
+        if(btnser.isSelected()) stat = btnser.getText(); 
+        if(btncrit.isSelected()) stat = btncrit.getText(); 
+ 	String nm = txtname.getText();  
+ 	boolean treated = false; 
+ 	p = new Patient(nm, stat, treated); 
+ 	String str = p.toString(); 
+ 	txtpatients.setToolTipText(str); 
+ 	int priority = -1; 
+        if(btncrit.isSelected()) priority = 0; 
+ 	if(btnser.isSelected()) priority = 1; 
+ 	if(btnfair.isSelected()) priority = 2; 
+ 	q.enqueue(p, priority); 
+ 	System.out.println(q.hasData()); 
         txtpatients.append(p.toString());
-        buttonGroup1.clearSelection();
-        q.enqueue(p,priority);
+
        
         
         
@@ -173,8 +182,17 @@ public class ERGUI extends javax.swing.JFrame {
 
     private void btnnextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnextActionPerformed
         // TODO add your handling code here:
-        p = (Patient)q.dequeue();
-        txtpatients.append("------------------"+p.toString() + "\nhas been treated\n");
+       
+            
+        p=(Patient)q.dequeue();
+        q.dequeue();
+        p.isTreated(true);
+        txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
+        
+      
+ 				 
+
+
     }//GEN-LAST:event_btnnextActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -182,15 +200,19 @@ public class ERGUI extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnallActionPerformed
+        // TODO add your handling code here:
+        for (int x=0; x<q.size();x++){
+            p=(Patient)q.dequeue();
+            txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
+        }
+    }//GEN-LAST:event_btnallActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+       
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
