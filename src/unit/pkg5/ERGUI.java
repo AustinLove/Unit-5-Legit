@@ -1,6 +1,8 @@
 
 package unit.pkg5;
 
+import javax.swing.JOptionPane;
+
 
 public class ERGUI extends javax.swing.JFrame {
 
@@ -57,6 +59,11 @@ public class ERGUI extends javax.swing.JFrame {
 
         buttonGroup1.add(btncrit);
         btncrit.setText("Critical Condition");
+        btncrit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncritActionPerformed(evt);
+            }
+        });
 
         btnsch.setText("Schedule");
         btnsch.addActionListener(new java.awt.event.ActionListener() {
@@ -155,21 +162,30 @@ public class ERGUI extends javax.swing.JFrame {
     private void btnschActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnschActionPerformed
         // TODO add your handling code here:
         
-        if(btnfair.isSelected()) stat = btnfair.getText(); 
-        if(btnser.isSelected()) stat = btnser.getText(); 
-        if(btncrit.isSelected()) stat = btncrit.getText(); 
- 	String nm = txtname.getText();  
- 	boolean treated = false; 
- 	p = new Patient(nm, stat, treated); 
- 	String str = p.toString(); 
- 	txtpatients.setToolTipText(str); 
- 	int priority = -1; 
-        if(btncrit.isSelected()) priority = 0; 
- 	if(btnser.isSelected()) priority = 1; 
- 	if(btnfair.isSelected()) priority = 2; 
- 	q.enqueue(p, priority); 
- 	System.out.println(q.hasData()); 
-        txtpatients.append(p.toString());
+         // Get name and Priority
+	String name = txtname.getText();
+	stat ="";
+	if (btncrit.isSelected()) {
+	    priority = 0;
+	} else if (btnser.isSelected()) {
+	    priority = 1;
+	} else {
+	    priority = 2;
+	}
+	
+	// Put in patient object
+	Patient p = new Patient(name, priority);
+	
+	// Add to Queue
+	q.enqueue(p, priority);
+	
+	txtpatients.append("\n" + p.toString());
+       
+        
+        
+        
+        // TODO add your handling code here:
+    
 
        
         
@@ -184,13 +200,14 @@ public class ERGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
        
             
-        p=(Patient)q.dequeue();
-        q.dequeue();
-        p.isTreated(true);
-        txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
-        
+       try {
+            txtpatients.append("\n--------------------------------------------------------------------------------\n" + q.dequeue().toString() + " has been treated...");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No more patients to treat");
+        }
+
       
- 				 
+   			 
 
 
     }//GEN-LAST:event_btnnextActionPerformed
@@ -202,11 +219,20 @@ public class ERGUI extends javax.swing.JFrame {
 
     private void btnallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnallActionPerformed
         // TODO add your handling code here:
-        for (int x=0; x<q.size();x++){
-            p=(Patient)q.dequeue();
-            txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
-        }
+         try {
+	    while(true) {
+                txtpatients.append("\n" + q.dequeue().toString() + " has been treated...");
+            }
+	} catch (Exception e) {
+            // Kind of hacky, but it works.
+	    JOptionPane.showMessageDialog(this, "All patients have been treated");
+	}
+
     }//GEN-LAST:event_btnallActionPerformed
+
+    private void btncritActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncritActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btncritActionPerformed
 
     /**
      * @param args the command line arguments
